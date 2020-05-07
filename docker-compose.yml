@@ -1,0 +1,27 @@
+version: "3.7"
+
+services:
+  django:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: bookstore_local_django
+    container_name: django
+    depends_on:
+      - db
+    volumes:
+      - .:/code
+    env_file: ./.env/.local/.django
+    ports:
+      - 8000:8000
+    command: gunicorn bookstore_project.wsgi --bind 0.0.0.0:8000
+
+  db:
+    image: postgres:11
+    container_name: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file: ./.env/.local/.postgres
+
+volumes:
+  postgres_data:

@@ -1,0 +1,38 @@
+{% extends '_base.html' %} 
+{% load static %}
+
+{% block title %} {{book.title}} {% endblock title %}
+
+{% block content %}
+<div class="book-detail">
+  {% if book.cover %}
+  <img class="bookcover" src="{{ book.cover.url }}" alt="{{ book.title }}" />
+  {% else %}
+  <img class="bookcover" src="{% static 'images/notavailable.jpeg' %}" alt="Cover not available" />
+  {% endif %}
+
+  <h2>{{ book.title }}</h2>
+  <p>Author: {{ book.author }}</p>
+  <p>Price: ${{ book.price }}</p>
+
+  {% if user.is_authenticated %}
+  <a href="{% url 'book_edit' book.pk %}">Edit</a>
+  <a href="{% url 'book_delete' book.pk %}">Delete</a>
+  {% endif %} {% if book.reviews.all %}
+  <div>
+    <h3>Reviews</h3>
+    <ul>
+      {% for review in book.reviews.all %}
+      <a href="{% url 'review_detail' review.pk %}">
+        <li>{{review.review}} ({{review.author}})</li>
+      </a>
+      {% endfor %}
+    </ul>
+  </div>
+  {% else %}
+  <div>
+    <h3>No reviews available yet</h3>
+  </div>
+  {% endif %}
+</div>
+{% endblock content %}

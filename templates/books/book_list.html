@@ -1,0 +1,22 @@
+{% extends '_base.html' %} 
+
+{% block title %}Books{% endblock title %} 
+
+{% block content %} 
+<h1>Books</h1>
+{% if not perms.books.special_status %}
+  <a href="{% url 'orders' %}" class="btn btn-success">Purchase All Books</a>
+{% endif %} 
+{% for book in book_list %}
+  <div class="jumbotron">
+    <h3>
+      <a href="{{ book.get_absolute_url }}">
+        {{book.title}}
+      </a>
+    </h3>
+    <p>Author: {{book.author}}</p>
+    <p>Price: ${{book.price}}</p>
+  </div>
+{% endfor %}
+<a class="btn btn-outline-primary" href="{% url 'book_new' %}">New Book</a>
+{% endblock content %}

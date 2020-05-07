@@ -1,0 +1,17 @@
+{% extends '_base.html' %}
+
+{% block title %}Book{% endblock title %}
+
+{% block content %} 
+{% for review in review_list %}
+<div class="jumbotron">
+  <h2>
+    <a href="{% url 'review_detail' review.pk %}">
+      <p>{{review.review}}</p>
+    </a>
+  </h2>
+  <p>Book: <a href="{% url 'book_detail' review.book.pk %}">{{review.book}}</a></p>
+</div>
+{% endfor %}
+<a class="btn btn-outline-primary" href="{% url 'review_new' %}">New Review</a>
+{% endblock content %}

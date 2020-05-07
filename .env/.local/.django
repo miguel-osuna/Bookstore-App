@@ -1,0 +1,5 @@
+ENVIRONMENT=development
+SECRET_KEY=kknez8#07j4_arw0l23zx@*dm(vk_jobd2p$$uqrn$$07j)#7pn)
+DEBUG=1
+STRIPE_TEST_PUBLISHABLE_KEY=pk_test_ziIHSpA10PlsRkkL6f2oxK6j00LYKPa8ZI
+STRIPE_TEST_SECRET_KEY=sk_test_bKRKT9cPQspl8yq5JUzZBaaR000mW2sT0j

@@ -13,8 +13,9 @@ services:
       - .:/code
     env_file: ./.env/.local/.django
     ports:
+      # HOST_PORT:CONTAINER_PORT
       - 8000:8000
-    command: gunicorn bookstore_project.wsgi --bind 0.0.0.0:8000
+    command: python /code/manage.py runserver 0.0.0.0:8000
 
   db:
     image: postgres:11
@@ -22,6 +23,8 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     env_file: ./.env/.local/.postgres
+    ports:
+      - 5432
 
 volumes:
   postgres_data:

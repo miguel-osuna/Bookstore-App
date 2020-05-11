@@ -7,9 +7,12 @@ class ReviewAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "book",
-        "review",
         "author",
+        "review",
     )
+    list_filter = ("book", "review", "author")
+    search_fields = ("book",)
+    ordering = ("book", "author")
 
 
 admin.site.register(Review, ReviewAdmin)

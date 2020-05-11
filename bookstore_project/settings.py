@@ -174,7 +174,6 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
-
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
@@ -193,19 +192,16 @@ import socket
 hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
 INTERNAL_IPS = [ip[:-1] + "1" for ip in ips]
 
-# Heroku
-import dj_database_url
-
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES["default"].update(db_from_env)
 
 # Production security settings
 if ENVIRONMENT == "production":
     # XSS (Cross Site Scripting Protection)
     SECURE_BROWSER_XSS_FILTER = True
+
     # Clickjacking Protection
     X_FRAME_OPTIONS = "DENY"
-    # SSL (Secure Sockets Layer) Redirection
+
+    # SSL (Secure Sockets Layer) Reidrection
     SECURE_SSL_REDIRECT = True
 
     # HSTS (HTTP Strict Transport Security) Restriction
@@ -217,3 +213,11 @@ if ENVIRONMENT == "production":
     # Secure Cookies
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+
+# Heroku
+import dj_database_url
+
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES["default"].update(db_from_env)

@@ -15,6 +15,9 @@ class BookAdmin(admin.ModelAdmin):
         "author",
         "price",
     )
+    list_filter = ("author", "price")
+    search_fields = ("title",)
+    ordering = ("author", "price")
 
 
 admin.site.register(Book, BookAdmin)

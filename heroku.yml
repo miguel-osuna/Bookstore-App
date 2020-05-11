@@ -1,12 +1,16 @@
+# Specifies the add-ons and config vars to create during app provisioning
 setup:
   addons:
-    - plan: heroku-postgresql
+    - plan: heroku-postgresql:hobby-dev
+
 build:
   docker:
     django: Dockerfile
+
 release:
   image: django
   command:
     - python manage.py collectstatic --noinput
+
 run:
   django: gunicorn bookstore_project.wsgi

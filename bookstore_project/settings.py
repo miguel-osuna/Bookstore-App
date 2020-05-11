@@ -26,7 +26,13 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = int(os.environ.get("DEBUG", default=0))
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "bookstore-project-production.herokuapp.com"]
+WEBSITE_URL = os.environ.get("WEBSITE", default=".herokuapp.com")
+
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    WEBSITE_URL,
+]
 
 
 # Application definition

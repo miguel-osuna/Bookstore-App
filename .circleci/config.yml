@@ -6,7 +6,7 @@ jobs:
 
     docker:
       # Primary container image with stable versions of Docker and Git
-      - image: docker:stable-git
+      - image: circleci/python:3.8.0
 
     steps:
       # Setup Docker environment

@@ -1,13 +1,64 @@
-version: 2.1
-description: "Deploy Django Docker image"
+version: 2
 
-orbs:
-  heroku: circleci/heroku@1.0.1
+jobs:
+  build:
+    working_directory: ~/base_project
+
+    docker:
+      # Primary container image with stable versions of Docker and Git
+      - image: docker:stable-git
+
+    steps:
+      # Setup Docker environment
+      - setup_remote_docker:
+          docker_layer_caching: true
+
+      # Step 1: obtain repo from GitHub
+      - checkout
+
+      # Step 2: build docker images from docker-compose file
+      - run:
+          name: Build images and start network
+          command: |
+            docker-compose -f local.yml build
+            docker-compose -f local.yml up -d
+
+  deploy: &deploy-heroku
+
+    working_directory: ~/base_project
+
+    docker:
+      # Primary container image with stable versions of Docker and Git
+      - image: docker:stable-git
+    steps:
+      - checkout
+      - run:
+          name: Setup Heroku
+          command: bash .circleci/setup-heroku.sh
+
+  deploy-staging:
+    <<: *deploy-heroku
+
+    environment:
+      ENVIRONMENT: "staging"
+
+    steps:
+      - checkout
+      - run:
+          # Setup heroku development environment
+          name: Setup heroku staging environment
+          command: bash .circleci/setup-heroku-staging.sh
+
+      - run:
+          # Deployment to heroku staging environment
+          name: Deploy to heroku development remote
+          command: 
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP-$ENVIRONMENT.git $CIRCLE_BRANCH:master
 
 workflows:
-  heroku_deploy:
+  version: 2
+  build-deploy:
     jobs:
-      - heroku/deploy-via-git:
-          filters:
-            branches:
-              only: master
+      - build
+      - deploy-staging
+        

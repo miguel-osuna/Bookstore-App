@@ -32,9 +32,6 @@ jobs:
       - image: docker:stable-git
     steps:
       - checkout
-      - run:
-          name: Setup Heroku
-          command: bash .circleci/setup-heroku.sh
 
   deploy-staging:
     <<: *deploy-heroku
@@ -44,11 +41,6 @@ jobs:
 
     steps:
       - checkout
-      - run:
-          # Setup heroku development environment
-          name: Setup heroku staging environment
-          command: bash .circleci/setup-heroku-staging.sh
-
       - run:
           # Deployment to heroku staging environment
           name: Deploy to heroku development remote
@@ -60,5 +52,10 @@ workflows:
   build-deploy:
     jobs:
       - build
-      - deploy-staging
-        
+      - deploy-staging:
+          requires:
+            - build
+          filters:
+            branches:
+              only: staging
+

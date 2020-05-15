@@ -20,8 +20,8 @@ jobs:
       - run:
           name: Build images and start network
           command: |
-            docker-compose -f local.yml build
-            docker-compose -f local.yml up -d
+            docker-compose  build
+            docker-compose up -d
 
   deploy: &deploy-heroku
 
@@ -47,6 +47,20 @@ jobs:
           command: 
             git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP-$ENVIRONMENT.git $CIRCLE_BRANCH:master
 
+  deploy-production:
+    <<: *deploy-heroku
+
+    environment:
+      ENVIRONMENT: "production"
+
+    steps:
+      - checkout
+      - run:
+          # Deployment to heroku staging environment
+          name: Deploy to heroku development remote
+          command: 
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP-$ENVIRONMENT.git $CIRCLE_BRANCH:master
+
 workflows:
   version: 2
   build-deploy:
@@ -58,4 +72,11 @@ workflows:
           filters:
             branches:
               only: staging
+
+      - deploy-production:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
 

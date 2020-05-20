@@ -2,35 +2,21 @@ version: 2
 
 jobs:
   build:
-    working_directory: ~/base_project
-
-    docker:
-      # Primary container image with stable versions of Docker and Git
-      - image: circleci/python:3.8.0
-
+    machine:
+      image: circleci/classic:edge
     steps:
-      # Setup Docker environment
-      - setup_remote_docker:
-          docker_layer_caching: true
-
-      # Step 1: obtain repo from GitHub
       - checkout
-
-      # Installing docker compose
       - run:
-          name: Install Docker Compose
+          name: docker-compose up
           command: |
-            set -x
-            curl -L https://github.com/docker/compose/releases/download/1.25.3/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
-            chmod +x /usr/local/bin/docker-compose
-
-
-      # Step 2: build docker images from docker-compose file
-      - run:
-          name: Build images and start network
-          command: |
-            docker-compose  build
+            docker-compose build
             docker-compose up -d
+      - run:
+          name: sleep for launch db to migrate at Django
+          command: sleep 10
+      - run:
+          name: migrate
+          command: docker-compose run --rm django python manage.py migrate
 
   deploy: &deploy-heroku
 

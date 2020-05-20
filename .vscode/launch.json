@@ -1,0 +1,30 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Remote Attach - Django Containerized",
+      "type": "python",
+      "request": "attach",
+      "port": 8000,
+      "host": "localhost",
+      "preLaunchTask": "Compose Up",
+      "postDebugTask": "Compose Down",
+      "pathMappings": [{ "localRoot": "${workspaceFolder}", "remoteRoot": "." }]
+    },
+    {
+      "name": "Docker: Python - Django",
+      "type": "docker",
+      "request": "launch",
+      "preLaunchTask": "docker-run: debug",
+      "python": {
+        "pathMappings": [
+          {
+            "localRoot": "${workspaceFolder}",
+            "remoteRoot": "/app"
+          }
+        ],
+        "projectType": "django"
+      }
+    }
+  ]
+}

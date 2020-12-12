@@ -8,17 +8,13 @@ Bookstore web application built with Django.
 - Book Indexing
 
 ### :high_brightness: Visuals
-![](staticfiles/img/bookstore_project_screen.png)
+![](staticfiles/images/bookstore_project_screen.png)
 
 ## :bulb: Getting Started
 Follow the instructions below to work on the project on your local environment. 
 
 ### :clipboard: Prerequisites
-These are the dependencies required for the project
-
-- node (v13.0.0)
-- npm (v6.13.0)
-- git (v2.17.1)
+In case you don't use Docker, you'll need Git, Python 3.7, Pip, Django and a Virtual Environment (like Conda).
 
 ### :computer: Installation
 ```
